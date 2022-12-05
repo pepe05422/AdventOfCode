@@ -28,11 +28,18 @@ func main() {
 
 	var repeatedValue []byte
 	var acumulated int
+	var slices []string
+	var i = 1
 	for fileScanner.Scan() {
-		line := fileScanner.Text()
-		firstSlice := line[0 : len(line)/2]
-		secondSlice := line[len(line)/2 : len(line)]
-		repeatedValue = append(repeatedValue, findDuplicates(firstSlice, secondSlice))
+		slices = append(slices, fileScanner.Text())
+		if i%3 == 0 {
+			// find repeated value
+			fmt.Println(slices)
+			repeatedValue = append(repeatedValue, findDuplicates(slices))
+			slices = make([]string, 0)
+		}
+		i++
+
 	}
 	readFile.Close()
 
@@ -44,22 +51,29 @@ func main() {
 	fmt.Printf("The final result: %d\n", acumulated)
 }
 
-func findDuplicates(firstSlice, secondSlice string) byte {
+func findDuplicates(slices []string) byte {
 	chars1 := make(map[byte]int)
 	chars2 := make(map[byte]int)
+	chars3 := make(map[byte]int)
 
-	for _, letter := range firstSlice {
+	for _, letter := range slices[0] {
 		chars1[byte(letter)]++
 	}
 
-	for _, letter := range secondSlice {
+	for _, letter := range slices[1] {
 		chars2[byte(letter)]++
+	}
+
+	for _, letter := range slices[2] {
+		chars3[byte(letter)]++
 	}
 
 	for k := range chars1 {
 		if _, ok := chars2[k]; ok {
 			// fmt.Printf("From %s and %s is repeated %s\n\n", firstSlice, secondSlice, string(k))
-			return k
+			if _, ok := chars3[k]; ok {
+				return k
+			}
 		}
 	}
 
