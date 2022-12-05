@@ -12,6 +12,24 @@ type turn struct {
 	mySelection  string
 }
 
+var lose = map[string]string{
+	"A": "Z",
+	"B": "X",
+	"C": "Y",
+}
+
+var draw = map[string]string{
+	"A": "X",
+	"B": "Y",
+	"C": "Z",
+}
+
+var win = map[string]string{
+	"A": "Y",
+	"B": "Z",
+	"C": "X",
+}
+
 func result(a, b string) int {
 
 	selectionValue := map[string]int{
@@ -21,6 +39,20 @@ func result(a, b string) int {
 	}
 
 	var duel int
+	switch b {
+	case "X":
+		// Lose
+		b = lose[a]
+		break
+	case "Y":
+		// Draw
+		b = draw[a]
+		break
+	case "Z":
+		// Win
+		b = win[a]
+		break
+	}
 
 	switch (turn{hisSelection: a, mySelection: b}) {
 	case turn{hisSelection: "A", mySelection: "X"},
