@@ -27,7 +27,7 @@ func main() {
 	for fileScanner.Scan() {
 		pairs := strings.Split(fileScanner.Text(), ",")
 		elf1, elf2 := stripeValues(pairs)
-		if fullyContains(elf1, elf2) {
+		if overlaps(elf1, elf2) {
 			acumulative++
 		}
 
@@ -39,6 +39,10 @@ func main() {
 
 func fullyContains(elf1, elf2 distribution) bool {
 	return elf1.from <= elf2.from && elf1.to >= elf2.to || elf2.from <= elf1.from && elf2.to >= elf1.to
+}
+
+func overlaps(elf1, elf2 distribution) bool {
+	return !(elf1.to < elf2.from) && !(elf2.to < elf1.from)
 }
 
 func stripeValues(pairs []string) (distribution, distribution) {
