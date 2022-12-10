@@ -37,9 +37,14 @@ func movePieces(s string, stackList *[10]Stack[string]) {
 	from, _ := strconv.Atoi(data[3])
 	to, _ := strconv.Atoi(data[5])
 
+	var piece []string
+
 	for i := 0; i < pieces; i++ {
-		piece := stackList[from].Pop()
-		stackList[to].Push(piece)
+		piece = append(piece, stackList[from].Pop())
+	}
+
+	for i := len(piece); i > 0; i-- {
+		stackList[to].Push(piece[i-1])
 	}
 }
 
